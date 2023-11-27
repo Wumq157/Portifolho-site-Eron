@@ -1,19 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Velha</title>
-<link rel="stylesheet" href="exercicio_08.css">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #3498db;
+            background-image: url('https://www.transparenttextures.com/patterns/45-degree-fabric-light.png');
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ecf0f1;
+            font-size: 2em;
+            cursor: pointer;
+            background-color: #2980b9;
+            color: #ecf0f1;
+        }
+
+        .cell:hover {
+            background-color: #1f618d;
+        }
+
+        .message {
+            margin-top: 1rem;
+            font-size: 1.5em;
+            color: #ecf0f1;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Jogo da Velha</h1>
     <div class="board" id="board"></div>
     <p class="message">Vez do Jogador X</p>
-    <img src="https://static.tudointeressante.com.br/uploads/2015/09/ser-idoso-e-o-que-ha-7.gif" alt="Velha Senhora 1" width="500" height="200">
+    <img src="https://static.tudointeressante.com.br/uploads/2015/09/ser-idoso-e-o-que-ha-7.gif" alt="Velha Senhora 1"
+        width="500" height="200">
 
     <script src="exercicio_08.js"></script>
+    <br>
+    <a href="index.html"
+        style="color: white; text-decoration: none; font-size: 18px; padding: 10px 20px; background-color: #333; border-radius: 5px; display: inline-block;">Voltar</a>
+    <script> // Obtém a referência ao elemento HTML com o ID 'board' e à classe '.message'.
+        const board = document.getElementById('board');
+        const message = document.querySelector('.message');
+
+        // Inicializa as variáveis do jogo.
+        let jogadorAtual = 'X'; // Define o jogador atual como 'X'.
+        let cells = Array(9).fill(''); // Cria um array vazio com 9 elementos para representar as células do tabuleiro.
+        let gameover = false; // Inicialmente, o jogo não está encerrado.
+
+        // Cria as células do tabuleiro e adiciona manipuladores de eventos de clique a cada uma.
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell'); // Adiciona a classe 'cell' para estilização.
+            cell.addEventListener('click', () => handleCellClick(i)); // Adiciona um evento de clique que chama a função handleCellClick com o índice da célula.
+            board.appendChild(cell); // Adiciona a célula criada ao tabuleiro.
+        }
+
+        // Função que lida com o clique em uma célula.
+        function handleCellClick(index) {
+            if (gameover || cells[index] !== '') return; // Se o jogo já terminou ou a célula já está preenchida, sai da função.
+
+            cells[index] = jogadorAtual; // Registra a jogada do jogador atual no array de células.
+            board.children[index].textContent = jogadorAtual; // Exibe o símbolo do jogador atual na célula clicada.
+
+            if (checkWinner()) { // Verifica se há um vencedor.
+                gameover = true; // O jogo termina.
+                message.textContent = `Jogador ${jogadorAtual} venceu!`; // Exibe a mensagem de vitória.
+            } else if (cells.every(cell => cell !== '')) { // Verifica se todas as células estão preenchidas, resultando em um empate.
+                gameover = true; // O jogo termina.
+                message.textContent = 'Empate!'; // Exibe a mensagem de empate.
+            } else {
+                jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X'; // Alterna o jogador atual entre 'X' e 'O'.
+                message.textContent = `Vez do Jogador ${jogadorAtual}`; // Exibe a mensagem de vez do jogador.
+            }
+        }
+
+        // Função que verifica se há um vencedor com base nos padrões de vitória.
+        function checkWinner() {
+            const winPatterns = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            // Verifica cada padrão de vitória.
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (cells[a] !== '' && cells[a] === cells[b] && cells[b] === cells[c]) {
+                    return true; // Se algum padrão de vitória for encontrado, retorna verdadeiro.
+                }
+            }
+
+            return false; // Se nenhum padrão de vitória for encontrado, retorna falso.
+        }
+    </script>
 </body>
+
 </html>

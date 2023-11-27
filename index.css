@@ -6,11 +6,9 @@ header {
     background-color: rgb(255, 145, 0);
     height: 16em;
     display: flex;
-}
-header h1{
-align-items: center;
-text-align: center;
-justify-content: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 header p{
@@ -20,6 +18,7 @@ header p{
     }
 
 .sHeader{
+    background-image: url(https://t.ctcdn.com.br/Re0eNpSC0b5XRiDJFGpx5xU2cOM=/1024x576/smart/i611963.jpeg);
     background-size: 100%;
     height: 40em;
 }
@@ -31,11 +30,25 @@ header p{
 }
 
 main {
+    background-color: bisque;
     display: flex;
-    background-color: beige;
+    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-
 }
+
+.ATV {
+    flex: 1;
+    width: 45%; /* Defina a largura desejada para cada div */
+    box-sizing: border-box;
+    margin: 10px;
+}
+
+.ATV img {
+    width: 100%; /* Ajusta a largura da imagem para preencher a div */
+    height: auto; /* Garante que a altura seja ajustada proporcionalmente */
+}
+
 
 footer {
     background-color: blue;
